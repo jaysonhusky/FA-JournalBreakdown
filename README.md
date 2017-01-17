@@ -13,6 +13,10 @@ This userscript implements a list of user generated terms in FA's Journal system
 - Download at GreasyFork: https://greasyfork.org/en/scripts/26236-furaffinity-journal-breakdown
 
 
+
+
 ## Changelog
+<b>2.0.1</b> (2017-01-17)<br>
+- Fixes convention naming, keyword parsing and display for all UIs
 <b>1.2</b> (2016-12-24)<br>
 - Initial commit.
