@@ -17,6 +17,6 @@ This userscript implements a list of user generated terms in FA's Journal system
 
 ## Changelog
 <b>2.0.1</b> (2017-01-17)<br>
-- Fixes convention naming, keyword parsing and display for all UIs
+- Fixes convention naming, keyword parsing and display for all UIs<br>
 <b>1.2</b> (2016-12-24)<br>
 - Initial commit.
