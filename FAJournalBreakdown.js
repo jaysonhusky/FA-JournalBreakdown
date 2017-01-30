@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FA Journal Breakdown
 // @namespace    FurAffinity
-// @version      2.0.1
+// @version      3.2
 // @description  Provides a breakdown of your journal list
 // @author       JaysonHusky
 // @grant        GM_getValue
@@ -22,7 +22,8 @@
 				$('#fajbm_settings').val(user_defined_keywords.replace(/,/g,", "));
 			}
 			else {
-				return "undefined";
+				console.log("Error occured while attempting to retrieve user keywords, ERR: KEY_UNDEFINED");
+                return "undefined";
 			}
 		}
 	// Save settings
@@ -30,11 +31,11 @@
 		GM_setValue('fajbm',fajbm);
 	}
 	// Load Control Panel
-		var pathx = window.location.pathname;
+		var pathx=window.location.pathname;
 		if(~pathx.indexOf("/controls/user-settings/")){
 			// Update
 			$(document.body).on('click', '#fajbm_saveit', function() {
-				var fajbm_set = $("input[name='fajbm_setting']").val().replace(/ /g,"").replace(/  /g,"");
+				var fajbm_set=$("input[name='fajbm_setting']").val().replace(/ /g,"").replace(/  /g,"");
 				FAJBM_SaveSettings(fajbm_set);
 				$('.faf-update-status').fadeIn('slow');
 					setTimeout(function(){
@@ -107,9 +108,9 @@
         KeywordTitle=$("#messages-journals h3").first().append('<br/><i style="font-size:70%;cursor:help;" title="Click on each term to highlight the relevant journal entries">Journal breakdown by term:</i>');
     }
     // Sort Keywords alphabetically
-     myKeywords = myKeywords.sort();
+     myKeywords=myKeywords.sort();
     // Creating the var's
-    var StreamCounter,scx,theStreamCount2,strtouc,CommCounter;
+    var scx,theStreamCount;
     // Adapt JQuery :contains to function without case restriction
     jQuery.expr[':'].icontains=function(a, i, m){
 		return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
@@ -117,27 +118,31 @@
     // JS equiv of PHPs ucwords() for better presentation (Credit: rickycheers @ Github)
     String.prototype.ucwords=function(){
         strtouc=this.toLowerCase();
-        return strtouc.replace(/(^([a-zA-Z\p{M}]))|([ -][a-zA-Z\p{M}])/g, function(s){
+        return strtouc.replace(/(^([a-zA-Z\p{M}]))|([ -][a-zA-Z\p{M}])/g,function(s){
             return s.toUpperCase();
         });
     };
     function CheckForConventionNaming(term){
         // I know YCH is not a convention, but it needs to be termed as a all caps response
-        var conventions=["ych","fc","mwff","mwf","fwa","blfc","cf","ac","sc","ef"];
-        if(conventions.indexOf(term) > -1) {
-            theStreamCount2='&nbsp;&nbsp;<i class="'+term+'" style="cursor:pointer;font-size:65%;"> '+term.toUpperCase()+': '+scx+'</i>';
+        var conventions=["ych","fc","mwff","mwf","fwa","blfc","cf","ac","sc","ef","ane","jftw","mp","bc","mff","af","ao","fau","ff","fm","fu","mcfc","nc","nfc","bff","bc","rcfm","cc","ifc"];
+        if(conventions.indexOf(term)>-1){
+            scx=$("#messagecenter-other #messages-journals li strong a:icontains('"+term+"')").length;
+            theStreamCount='&nbsp;&nbsp;<i class="'+term+'" style="cursor:pointer;font-size:65%;"> '+term.toUpperCase()+': '+scx+' </i>';
            }
-        else if(term == "cfz"){
-			// due to the way Confuzzled stylise their name, it has a unique condition here.
-             theStreamCount2='&nbsp;&nbsp;<i class="'+term+'" style="cursor:pointer;font-size:65%;"> CFz: '+scx+'</i>';
+        else if(term=="cfz"){
+			// Due to the way Confuzzled stylise their name, it has a unique condition here.
+            scx=$("#messagecenter-other #messages-journals li strong a:icontains('"+term+"')").length;
+            theStreamCount='&nbsp;&nbsp;<i class="'+term+'" style="cursor:pointer;font-size:65%;"> CFz: '+scx+'</i> ';
         }
-        else {
-             theStreamCount2='&nbsp;&nbsp;<i class="'+term+'" style="cursor:pointer;font-size:65%;"> '+term.ucwords()+': '+scx+'</i>';
+        else{
+            scx=$("#messagecenter-other #messages-journals li:icontains('"+term+"')").length;
+            theStreamCount='&nbsp;&nbsp;<i class="'+term+'" style="cursor:pointer;font-size:65%;"> '+term.ucwords()+': '+scx+' </i>';
            }
     }
     // Search for custom keywords
     myKeywords.forEach(function(keyword) {
-        scx=$("#messagecenter-other #messages-journals li:icontains('"+keyword+"')").length;
+        // Add CSS3 Transitional feature for keyword click
+        $("."+keyword+"").css('transition','0.5s all');
         // Run a check against list of convention abbreviations and correctly present them
         CheckForConventionNaming(keyword);
         // Add custom keywords to Journal header
@@ -145,10 +150,18 @@
 		// Highlight when clicked (deselecting all others)
         $("."+keyword).click(function(){
             if(STATIC_PATH=="/themes/beta"){
+                $("."+keyword+"").css('transition','0.5s all');
+                $("."+keyword+"").css('background','#5b5e65');
+                $("."+keyword+"").css('border-radius','3px');
+                $("#messages-journals i:not(."+keyword+")").css('background','transparent');
                 $("#messagecenter-other #messages-journals li:icontains('"+keyword+"')").css('background','#535d75');
                 $("#messagecenter-other #messages-journals li:not(:icontains("+keyword+"))").css('background','transparent');
             }
             else {
+                $("."+keyword+"").css('transition','0.5s all');
+                $("."+keyword+"").css('background','rgba(1,0,0,0.2');
+                $("."+keyword+"").css('border-radius','3px');
+                $("#messages-journals i:not(."+keyword+")").css('background','transparent');
                 $("#messagecenter-other #messages-journals li:icontains('"+keyword+"')").css('background','rgba(1,0,0,0.2');
                 $("#messagecenter-other #messages-journals li:not(:icontains("+keyword+"))").css('background','transparent');
             }
