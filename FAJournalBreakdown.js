@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FA Journal Breakdown
 // @namespace    FurAffinity
-// @version      3.2
+// @version      3.2.0.1
 // @description  Provides a breakdown of your journal list
 // @author       JaysonHusky
 // @grant        GM_getValue
@@ -17,7 +17,7 @@
 	// Begin loading
 		function FAJBM_Load(){
 			var user_defined_keywords=GM_getValue('fajbm');
-			if(user_defined_keywords > ""){
+			if(user_defined_keywords>""){
 				myKeywords=user_defined_keywords.split(",");
 				$('#fajbm_settings').val(user_defined_keywords.replace(/,/g,", "));
 			}
@@ -34,7 +34,7 @@
 		var pathx=window.location.pathname;
 		if(~pathx.indexOf("/controls/user-settings/")){
 			// Update
-			$(document.body).on('click', '#fajbm_saveit', function() {
+			$(document.body).on('click', '#fajbm_saveit', function(){
 				var fajbm_set=$("input[name='fajbm_setting']").val().replace(/ /g,"").replace(/  /g,"");
 				FAJBM_SaveSettings(fajbm_set);
 				$('.faf-update-status').fadeIn('slow');
@@ -110,7 +110,7 @@
     // Sort Keywords alphabetically
      myKeywords=myKeywords.sort();
     // Creating the var's
-    var scx,theStreamCount;
+    var scx,theStreamCount,strtouc;
     // Adapt JQuery :contains to function without case restriction
     jQuery.expr[':'].icontains=function(a, i, m){
 		return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
@@ -146,7 +146,7 @@
         // Run a check against list of convention abbreviations and correctly present them
         CheckForConventionNaming(keyword);
         // Add custom keywords to Journal header
-        $(KeywordTitle).append(theStreamCount2);
+        $(KeywordTitle).append(theStreamCount);
 		// Highlight when clicked (deselecting all others)
         $("."+keyword).click(function(){
             if(STATIC_PATH=="/themes/beta"){
