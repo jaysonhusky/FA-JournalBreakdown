@@ -13,6 +13,11 @@ This userscript implements a list of user generated terms in FA's Journal system
 
 ## Changelog
 
+<b>5.0.1</b> (2017-03-02)<br/>
+- Adds: 5.0.1  Adds subtle transitions on term clicks for better appearance.
+- Changes: Hides terms with no results, so it doesn't clutter your screen. 
+- Fixes: Tidies custom CSS to make it more efficient, and fixes whitespace issue present in 4.0 (4.0 not publicly released, version jumps from 3.2.0.1 to 5.0.1)<br/>
+
 <b>3.2.0.1</b> (2017-01-30)<br/>
 - Fixes: Removes unused variables, adds missing variable and general tidying.<br/>
 
