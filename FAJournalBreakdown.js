@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FA Journal Breakdown
 // @namespace    FurAffinity
-// @version      8.0
+// @version      9.9.12
 // @description  Provides a breakdown of your journal list
 // @author       JaysonHusky
 // @grant        GM_getValue
@@ -12,6 +12,7 @@
 // ==/UserScript==
 (function() {
     'use strict';
+    var TemplateStyle=$('body').attr('data-static-path');
     // Setup keywords
 		var myKeywords;
     // Creating the var's
@@ -25,6 +26,7 @@
 			}
 			else {
 				console.log("Error occured while attempting to retrieve user keywords, ERR: KEYS_UNDEFINED");
+                //return "undefined";
 			}
 		}
 	  // Add Special Stylesheet for keywords
@@ -42,11 +44,18 @@
 				display:none;
 			}
 			#customfacontrolpanel{
-				border:1px dashed white;
+				/*border:1px dashed white;
 				background:rgba(1,0,0,0.1);
 				padding:5px;
-				border-radius:5px;
+				border-radius:5px;*/
 				margin-top:20px;
+			}
+			.JaySB{
+				background: #36393d;
+				padding: 7px 14px 14px 14px;
+			}
+			#speciallisting li{
+				margin-left:20px;
 			}
 		`);
 		JaysCSS.appendChild(jayStyle);
@@ -67,27 +76,33 @@
 						$('.faf-update-status').fadeOut('slow');
 					}, 5000);
 				});
-				if(STATIC_PATH=="/themes/beta"){
-				$('.content .section-divider').after(`
-					<div id="customfacontrolpanel">
+				if(TemplateStyle=="/themes/beta"){
+				$('.content .section-body').after(`
+					<div id="customfacontrolpanel" class="JaySB">
 						<h2>FA Journal Breakdown Control Panel <span class="faf-update-status">Update successful!</span></h2>
 						<br/>
-						<strong>Custom Keywords</strong>
+						<h4>Custom Keywords to track in journal titles</h4>
 						<div class="control-panel-option">
 							<div class="control-panel-item-1">
-								<p>Enter keywords here for the addon to identify in journal titles. <br/>Keywords MUST be comma seperated and usernames MUST match the username of the page, NOT the URL.<br/>Singular terms like "Stream" will match "Streams" etc.</p>
+								<p>
+								<ul id="speciallisting">
+								<li>Keywords must be comma seperated.</li>
+								<li>Must match username and not URL style.</li>
+								<li>Singular terms will match plurals.</li>
+								</ul>
+								</p>
 							</div>
 							<div class="control-panel-item-2">
-								<input type="text" name="fajbm_setting" id="fajbm_settings" placeholder="Example: free,fender,commission" style="padding:5px; width:250px" />
+								<input type="text" name="fajbm_setting" id="fajbm_settings" class="textbox" placeholder="Example: free,fender,commission" style="height:36px;padding:5px; width:300px" />
 							</div>
 						</div>
 						<div class="button-nav">
 							<div class="button-nav-item">
-								<input class="button mobile-button" id="fajbm_saveit" type="button" value="Save Settings*">
+								<input class="button mobile-button" id="fajbm_saveit" type="button" value="Save Journal Breakdown Settings*">
 							</div>
 						</div>
-						<br/><b>*Updates take effect from the next page load</b><br/><span style="font-size:10px;">FA Journal Breakdown by <a href="https://www.furaffinity.net/user/feralfrenzy" style="border-bottom:1px dotted white;">JaysonHusky</a></span>
-					</div>`);
+						<br/><b>*Updates take effect from the next page load.</b><br/><span style="font-size:10px;position:relative;bottom:0;right:0;">FA Journal Breakdown by <a href="https://www.furaffinity.net/user/feralfrenzy" style="border-bottom:1px dotted white;">JaysonHusky</a></span>
+					</div><br/><br/>`);
 				}
 				else {
 					$('.footer').before(`<table cellpadding="0" cellspacing="1" border="0" class="section maintable" style="width: 60%; margin: 0 auto;">
@@ -105,7 +120,7 @@
 										<tr>
 											<th><strong>Custom Keywords</strong></th>
 											<td>
-												<input type="text" name="fajbm_setting" id="fajbm_settings" placeholder="Example: free,fender,commission" style="padding:5px; width:250px" />
+												<input type="text" name="fajbm_setting" id="fajbm_settings" class="textbox" placeholder="Example: free,fender,commission" style="padding:5px; width:250px" />
 											</td>
 											<td class="option-description">
 												<p>Enter keywords here for the addon to identify in journal titles. <br/>Keywords MUST be comma seperated and usernames MUST match the username of the page, NOT the URL.<br/>Singular terms like "Stream" will match "Streams" etc.</p>
@@ -126,7 +141,7 @@
 		FAJBM_Load();
     // Setup the hook
     var KeywordTitle;
-    if(STATIC_PATH=="/themes/beta"){
+    if(TemplateStyle=="/themes/beta"){
         KeywordTitle=$("#messages-journals h2").append('<br/><i style="font-size:70%;cursor:help;" title="Click on each term to highlight the relevant journal entries">Journal breakdown by term:</i>&nbsp;');
     }
     else {
@@ -148,10 +163,10 @@
             return s.toUpperCase();
         });
     };
-    var stafflist=["dragoneer","chase","shivadramon","asianeko","foxamoore","monique","quotingmungo","yak","net-cat","pickra","fender"];
+    var stafflist=["dragoneer","chase","shivadramon","asianeko","foxamoore","monique","quotingmungo","net-cat","pickra","fender"];
     function CheckForConventionNaming(term){
         // I know YCH is not a convention, but it needs to be termed as a all caps response
-        var conventions=["ych","fc","mwff","mwf","fwa","blfc","cf","ac","sc","ef","ane","jftw","mp","bc","mff","af","ao","fau","ff","fm","fu","mcfc","nc","nfc","bff","bc","rcfm","cc","ifc"];
+        var conventions=["ych","fc","mwff","mwf","fwa","blfc","cf","ac","sc","ef","ane","jftw","mp","bc","mff","af","ao","fau","ff","fm","fu","mcfc","nc","nfc","bff","bc","cc","ifc"];
         if(conventions.indexOf(term)>-1){
             scx=$("#messagecenter-other #messages-journals li strong a:icontains('"+term+"')").length;
             if(scx===0){theStreamCount='<i class="'+term+' fajbm" style="cursor:pointer;font-size:65%;display:none;"> '+term.toUpperCase()+': '+scx+' </i>';}
@@ -185,16 +200,10 @@
         // Run a check against list of convention abbreviations and correctly present them
         CheckForConventionNaming(keyword);
         // Add custom keywords to Journal header
-        if ($('.fajbm').css('display') == 'none') {
-            $(KeywordTitle).append('<i class="fabjm_nomatch" style="font-size:65%;cursor:pointer;color:white;" title="None of your defined keywords currently match any of the journals in your inbox, this message will disappear once a match is made">No keywords match in the current journal listing</i>');
-            $('.fabjm_nomatch').slice(1).hide();
-        }
-        else {
             $(KeywordTitle).append(theStreamCount+"");
-        }
 		// Highlight when clicked (deselecting all others)
         $("."+keyword).click(function(){
-            if(STATIC_PATH=="/themes/beta"){
+            if(TemplateStyle=="/themes/beta"){
                 $("."+keyword+"").css({
                     'transition':'0.2s all',
                     'background':'#5b5e65',
