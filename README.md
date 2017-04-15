@@ -60,8 +60,6 @@ This userscript implements a list of user generated terms in FA's Journal system
 
 <b>2.1</b> <br/>
 - Removes "Tampermonkey" name from title. No feature changes.<br/><br/>
-
-<b>2.1</b> <br/>
 - Correctly interprets distinction between convention abbreviations and usernames with similar letters.<br/><br/>
 
 <b>2.0.1</b> <br/>
@@ -72,20 +70,12 @@ This userscript implements a list of user generated terms in FA's Journal system
 
 <b>1.8</b> <br/>
 - Changed control panel text to show removal of restriction surrounding spaces in keywords, also included screenshots<br/><br/>
-
-<b>1.8</b> <br/>
 - Reintroduces the Firefox dependant wildcard operate for matched url.<br/><br/>
-
-<b>1.8</b> <br/>
 - Fixes the parsing of spaces in keywords when comma delimited, making control panel more user friendly without impacting functionality<br/><br/>
 
 <b>1.7.0.2</b> <br/>
 - After much research, please use this script with Tampermonkey, it can function with GreaseMonkey, but throws unexpected errors.<br/><br/>
-
-<b>1.7.0.2</b> <br/>
 - Updated descriptions for control panels to reflect changes.<br/><br/>
-
-<b>1.7.0.2</b> <br/>
 - Temporary fix to enable correct parsing if spaces are found keywords<br/><br/>
 
 <b>1.7.0.1</b> <br/>
